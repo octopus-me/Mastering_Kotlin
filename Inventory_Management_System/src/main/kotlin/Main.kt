@@ -1,16 +1,31 @@
 package org.example
 
+import org.example.classes.SimpleProduct
+import org.example.classes.PerishableProduct
+import org.example.classes.DiscountedProduct
+import org.example.classes.Transaction
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, " + name + "!")
+    val inventory = Inventory()
 
-    for (i in 1..5) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        println("i = $i")
-    }
+    val apple = SimpleProduct("P001", "Apple", 0.5, 100)
+    val milk = PerishableProduct("P002", "Milk", 1.0, 50, "2024-08-01")
+    val chocolate = DiscountedProduct("P003", "Chocolate", 2.0, 30, 10.0)
+
+    inventory.addProduct(apple)
+    inventory.addProduct(milk)
+    inventory.addProduct(chocolate)
+
+    val saleTransaction = Transaction(product = apple, quantity = 10, type = "SALE")
+    inventory.processTransaction(saleTransaction)
+
+    val restockTransaction = Transaction(product = chocolate, quantity = 20, type = "RESTOCK")
+    inventory.processTransaction(restockTransaction)
+
+    val discountPrice = chocolate.calculateDiscountedPrice()
+    println("Discounted price of ${chocolate.name}: $$discountPrice")
+
+    val isMilkExpired = milk.isExpired("2024-02-24")
+    println("Is milk expired? $isMilkExpired")
 }
